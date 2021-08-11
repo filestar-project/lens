@@ -31,6 +31,12 @@ export const initSearch = async () => {
       field: ["name", "title", "type"],
       store: ["id", "type"],
     },
+    encode: false,
+    tokenize: function(str){
+      const cjkItems = str.replace(/[\x00-\x7F]/g, "").split("");
+      const asciiItems = str.replace(/[^\x00-\x7F]/g, "").split("");
+      return cjkItems.concat(asciiItems);
+    }
   });
   let items = [];
   let slates = await Data.getEverySlate({ sanitize: true, publicOnly: true });
@@ -66,7 +72,8 @@ export const search = async (query, type) => {
     results = await client.mget(...resultIds);
   }
   results = results.map((res) => JSON.parse(res));
-  console.log(results);
+  results = results.filter(e => (e.data ? e.data.name : '').includes(query));
+  console.log(`Found ${results.length} results for word '${query}': ${results.map(e => e.data ? e.data.name : '').join('  ')}`);
 
   let ownerResults = [];
   if (!type || type === "SLATE" || type === "FILE") {
