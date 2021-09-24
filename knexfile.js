@@ -3,7 +3,7 @@ import * as Environment from "~/node_common/environment";
 const developmentConfig = {
   client: "pg",
   connection: {
-    ssl: true,
+    ssl: false,
     port: 5432,
     host: Environment.POSTGRES_HOSTNAME,
     database: Environment.POSTGRES_DATABASE,
@@ -15,7 +15,7 @@ const developmentConfig = {
 const productionConfig = {
   client: "pg",
   connection: {
-    ssl: true,
+    ssl: false,
     port: 5432,
     host: Environment.POSTGRES_HOSTNAME,
     database: Environment.POSTGRES_DATABASE,
